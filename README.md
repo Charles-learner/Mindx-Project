@@ -1,2 +1,3 @@
 # Mindx-Project
-vẫn còn trong công đoạn nghiên cứu api key
+đã hoàn thiện những tính năng cơ bản nhất 
+và đang trong quá trình phát triển thêm
