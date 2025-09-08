@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Trainerkit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+SA:wght@100..400&display=swap" rel="stylesheet">
+  <link href="static/style.css" rel="stylesheet">
+  <link href="static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="navbar-container">
+        <div class="navbar">
+            <div class="navbar-left">
+                <!--"img src="static/image/logo1.jpg" alt="here" style="height: 50px; border-radius: 50% ;" class="logo"-->
+                <a href="/" class="nav-link"><div style="color: #000000ff; font-size: 20px">Home</div></a>
+                <a href="/players" class="nav-link"><div>Players</div></a>   
+            </div>
+            <div class="navbar-right">
+                <div class="find-a-store">
+                    <svg
+                        aria-hidden="true"
+                        class="valign-middle pr2"
+                        focusable="false"
+                        preserveAspectRatio="xMidYMid meet"
+                        style="
+                            width: 32px;
+                            height: 32px;
+                            overflow: visible;
+                            fill: currentColor;
+                        "
+                        viewBox="0 0 24 24"
+                    >
+                        <path></path>
+                    </svg>
+                </div>
+                <div class="sign-in">Sign in</div>
+                <div class="join-now">Join now</div>
+            </div>
+        </div>
+    </div>
+
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">Quản lý cầu thủ CLB</h1>
+
+    <form id="playerForm" class="bg-white shadow-lg p-6 rounded-xl flex flex-wrap gap-3">
+      <input type="text" id="name" placeholder="Tên cầu thủ" class="border p-2 rounded w-80" required>
+      <input type="number" id="age" placeholder="Tuổi" class="border p-2 rounded w-24" required min="0">
+      <select id="position" class="border p-2 rounded" required>
+        <option value="">-- Chọn vị trí --</option>
+        <option value="GK">Thủ môn (GK)</option>
+        <option value="LB">Hậu vệ trái (LB)</option>
+        <option value="RB">Hậu vệ phải (RB)</option>
+        <option value="CB">Trung vệ (CB)</option>
+        <option value="CDM">Tiền vệ phòng ngự (CDM)</option>
+        <option value="CM">Tiền vệ trung tâm (CM)</option>
+        <option value="CAM">Tiền vệ tấn công (CAM)</option>
+        <option value="LM">Tiền vệ cánh trái (LM)</option>
+        <option value="RM">Tiền vệ cánh phải (RM)</option>
+        <option value="LW">Tiền đạo cánh trái (LW)</option>
+        <option value="RW">Tiền đạo cánh phải (RW)</option>
+        <option value="ST">Tiền đạo cắm (ST)</option>
+      </select>
+      <input type="number" id="goals" placeholder="Bàn thắng" class="border p-2 rounded w-28" min="0">
+      <input type="number" id="assists" placeholder="Kiến tạo" class="border p-2 rounded w-28" min="0">
+      <input type="number" id="stamina" placeholder="Thể lực (0-100)" class="border p-2 rounded w-48" min="0" max="100" required>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Thêm</button>
+    </form>
+
+    <h2 class="text-xl font-semibold mb-2">Danh sách cầu thủ</h2>
+    <ul id="playerList" class="p-4 rounded shadow"></ul>
+
+    <h2 class="text-xl font-semibold mt-6 mb-2">Thống kê đội bóng</h2>
+    <div id="stats" class="bg-white p-4 rounded shadow"></div>
+
+    <div id="editForm" class="hidden shadow p-4 rounded mb-6">
+      <h2 class="text-lg font-bold mb-2">Sửa cầu thủ</h2>
+      <input type="text" id="editName" class="border p-2 mr-2">
+      <input type="number" id="editAge" class="border p-2 mr-2">
+      <select id="editPosition" class="border p-2 mr-2"> 
+        <option value="">-- Chọn vị trí --</option>
+        <option value="GK">Thủ môn (GK)</option>
+        <option value="LB">Hậu vệ trái (LB)</option>
+        <option value="RB">Hậu vệ phải (RB)</option>
+        <option value="CB">Trung vệ (CB)</option>
+        <option value="CDM">Tiền vệ phòng ngự (CDM)</option>
+        <option value="CM">Tiền vệ trung tâm (CM)</option>
+        <option value="CAM">Tiền vệ tấn công (CAM)</option>
+        <option value="LM">Tiền vệ cánh trái (LM)</option>
+        <option value="RM">Tiền vệ cánh phải (RM)</option>
+        <option value="LW">Tiền đạo cánh trái (LW)</option>
+        <option value="RW">Tiền đạo cánh phải (RW)</option>
+        <option value="ST">Tiền đạo cắm (ST)</option>
+      </select>
+      <input type="number" id="editGoals" class="border p-2 mr-2">
+      <input type="number" id="editAssists" class="border p-2 mr-2">
+      <input type="number" id="editStamina" class="border p-2 mr-2">
+      <button onclick="saveEdit()" class="bg-green-500 text-white px-4 py-2 rounded">Lưu</button>
+      <button onclick="cancelEdit()" class="bg-gray-500 text-white px-4 py-2 rounded">Hủy</button>
+    </div>
+  </div>
+
+  <script>
+    async function fetchPlayers() {
+      const res = await fetch('/api/players');
+      const data = await res.json();
+      const list = document.getElementById('playerList');
+      list.innerHTML = '';
+      data.forEach((p, i) => {
+        list.innerHTML += `
+          <li class="p-3 bg-gray-50 rounded-lg flex justify-between items-center mb-2 shadow">
+            <span>${p.name} (${p.age}t) - ${p.position} | ⚽ ${p.goals} | 🎯 ${p.assists} | 💪 ${p.stamina}</span>
+            <div class="flex gap-2">
+              <button onclick="deletePlayer(${i})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Xóa</button>
+              <button onclick="editPlayer(${i})" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Sửa</button>
+            </div>
+          </li>
+        `;
+      });
+    }
+
+    async function deletePlayer(index) {
+      if (!confirm("Bạn có chắc muốn xoá cầu thủ này?")) return;
+      await fetch(`/api/players/${index}`, { method: 'DELETE' });
+      fetchPlayers();
+      fetchStats();
+    }
+
+    let editingIndex = null;
+
+    function editPlayer(index) {
+      editingIndex = index;
+      fetch('/api/players')
+        .then(res => res.json())
+        .then(players => {
+          const p = players[index];
+          document.getElementById('editName').value = p.name;
+          document.getElementById('editAge').value = p.age;
+          document.getElementById('editPosition').value = p.position;
+          document.getElementById('editGoals').value = p.goals;
+          document.getElementById('editAssists').value = p.assists;
+          document.getElementById('editStamina').value = p.stamina;
+          document.getElementById('editForm').classList.remove('hidden');
+        });
+    }
+
+    async function saveEdit() {
+      const updated = {
+        name: document.getElementById('editName').value,
+        age: parseInt(document.getElementById('editAge').value),
+        position: document.getElementById('editPosition').value,
+        goals: parseInt(document.getElementById('editGoals').value),
+        assists: parseInt(document.getElementById('editAssists').value),
+        stamina: parseInt(document.getElementById('editStamina').value)
+      };
+
+      await fetch(`/api/players/${editingIndex}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+
+      document.getElementById('editForm').classList.add('hidden');
+      fetchPlayers();
+      fetchStats();
+    }
+
+    function cancelEdit() {
+      document.getElementById('editForm').classList.add('hidden');
+    }
+
+    async function fetchStats() {
+      const res = await fetch('/api/stats');
+      if (res.ok) {
+        const stats = await res.json();
+        document.getElementById('stats').innerHTML = `
+          <p>⚽ Trung bình bàn thắng: ${stats.avg_goals}</p>
+          <p>🎯 Trung bình kiến tạo: ${stats.avg_assists}</p>
+          <p>💪 Thể lực trung bình: ${stats.avg_stamina}</p>
+          <p>🏆 Vua phá lưới: ${stats.top_scorer.name} (${stats.top_scorer.goals} bàn)</p>
+          <p>🅰️ Kiến tạo nhiều nhất: ${stats.top_assist.name} (${stats.top_assist.assists} kiến tạo)</p>
+        `;
+      }
+    }
+
+    document.getElementById('playerForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const player = {
+        name: document.getElementById('name').value,
+        age: +document.getElementById('age').value,
+        position: document.getElementById('position').value,
+        goals: +document.getElementById('goals').value,
+        assists: +document.getElementById('assists').value,
+        stamina: +document.getElementById('stamina').value
+      };
+      await fetch('/api/players', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(player)
+      });
+      fetchPlayers();
+      fetchStats();
+      e.target.reset(); // Xóa sạch form sau khi submit
+    });
+
+    fetchPlayers();
+    fetchStats();
+  </script>
+</body>
+</html>

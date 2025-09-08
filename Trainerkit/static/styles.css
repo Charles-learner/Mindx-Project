@@ -1,0 +1,182 @@
+.none{
+    text-decoration: none;
+}
+
+.content-text{
+    color: rgb(190, 35, 35);
+}
+
+.banner{
+    padding-top:3rem;
+    text-align: left !important;
+    color: rgb(205, 55, 55) !important;
+    padding-left: 2rem;
+    font-size: 20px;
+    font-family: "Playwrite AU SA", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+span.tieude{
+    font-size: 50px;
+    font-weight: bold;
+    color: rgb(219, 15, 15);
+}
+
+.navbar-container {
+    box-shadow: 0px 4px 10px 0px rgba(13, 11, 11, 0.71);
+    -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.71);
+    -moz-box-shadow: 0px 4px 5px 0px rgba(23, 16, 16, 0.71);
+    background-color: #d3cfde;
+}
+.navbar {
+    max-width: 1560px;
+    padding: 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.navbar-left svg {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.navbar-left div {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.navbar-left div:hover,
+.find-a-store:hover {
+    color: #c00c0c;
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left > *,
+.navbar-right > * {
+    margin: 10px;
+}
+
+.find-a-store {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.sign-in,
+.join-now {
+    font-weight: 500;
+    border: 1px solid black;
+    border-radius: 40px;
+    padding: 5px 20px 5px 20px;
+}
+
+.join-now {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+.sign-in{
+    background-color: rgb(0, 0, 0);
+    color: white; 
+}
+
+.join-now:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.sign-in:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+img.block{
+    width: 50%;
+    object-fit: cover;
+    padding-right:1rem;
+}
+
+div.container {
+    max-width: 1440px;
+    margin: auto;
+}
+.container{
+    background-color: #ffffff!important;
+    text-align: left !important;
+    width: 100%;
+    padding-right:0.5rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.row{
+    display:flex;
+    flex-wrap:wrap;
+    margin-top:-31px;
+    max-width:100%;   
+    margin: 40px 0px 40px 0px;
+}
+
+.col{
+    border-left: #d1bc9e solid;
+    margin-left: rem;
+    max-width: 50%;
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    align-content: stretch;
+    flex-direction: column;
+}
+
+.footer {
+    padding: 50px;
+    text-align: center;
+    color: black;
+}
+
+.container{
+    margin: 40px 0px 40px 0px;
+}
+
+.product{
+    display: flex;
+}
+ body{
+    background-color: #ffffff;
+ }
+ .color{
+    color:#ffffff;
+ }
+ 
+ h1.tieude_1{
+    text-align: center; 
+    padding-top: 1cm; 
+    font-size: 50px;
+ }
+ h3.comingsoon{
+    text-align: center;
+    padding:5rem;
+    font-size: 100px;
+ }
+
+ /* STYLE FOR THE LINK OF THE MENU */
+ .nav-link{
+    text-decoration: none;
+    color: black !important;
+    background-repeat: no-repeat;
+    background-position: centerz;
+ }
+p.color-textBlackSoft {
+    color: rgba(0, 0, 0, 0.58) !important;
+    text-align: center;
+}
+h1.tieude_1,h3.comingsoon{
+    color:black;
+}
+
