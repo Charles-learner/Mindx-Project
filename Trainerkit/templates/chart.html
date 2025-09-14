@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Trainerkit - Phân tích Cầu thủ</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="static/style2.css" rel="stylesheet">
+  <link href="static/style3.css" rel="stylesheet">
+  
+  <style>
+    /* Chart Styles */
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .chart-loading, .empty-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      text-align: center;
+      color: #6b7280;
+    }
+    
+    .empty-chart-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+    
+    .metric-select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .info-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-left: 4px solid #2563eb;
+      transition: transform 0.2s ease;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+    <div class="navbar-container">
+        <div class="navbar">
+            <div class="navbar-left">
+                <a href="/" class="nav-link"><div style="color: #2563eb; font-size: 20px; font-weight: 800;">🏠 Home</div></a>
+                <a href="/players" class="nav-link"><div>👥 Players</div></a>
+                <a href="/chart" class="nav-link"><div>📊 Analysis</div></a>
+                <a href="/comp" class="nav-link"><div>📊 Comparison</div></a>   
+            </div>
+            <div class="navbar-right">
+                <div class="sign-in">Sign in</div>
+                <div class="join-now">Join now</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">📊 Phân tích Đội bóng</h1>
+        
+        <div class="chart-controls">
+            <form method="get" action="/chart" class="metric-form">
+                <label for="metric" class="form-label">📈 Chọn chỉ số phân tích:</label>
+                <select name="metric" id="metric" onchange="submitForm()" class="metric-select">
+                    <option value="goals" {% if metric=='goals' %}selected{% endif %}>⚽ Bàn thắng (Goals)</option>
+                    <option value="assists" {% if metric=='assists' %}selected{% endif %}>🅰️ Kiến tạo (Assists)</option>
+                    <option value="stamina" {% if metric=='stamina' %}selected{% endif %}>💪 Thể lực (Stamina)</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="chart-container">
+            <div id="chartWrapper">
+                {{ graph|safe }}
+            </div>
+        </div>
+        
+        <div class="chart-info">
+            <div class="info-card">
+                <h3>💡 Thông tin biểu đồ</h3>
+                <p>Biểu đồ tròn này hiển thị phân bố của chỉ số được chọn giữa các cầu thủ trong đội. 
+                   Bạn có thể chuyển đổi giữa các chỉ số khác nhau để có cái nhìn tổng quan về đội bóng.</p>
+                <ul class="info-list">
+                    <li>⚽ <strong>Bàn thắng:</strong> Số bàn thắng ghi được của mỗi cầu thủ</li>
+                    <li>🅰️ <strong>Kiến tạo:</strong> Số đường kiến tạo thành công</li>
+                    <li>💪 <strong>Thể lực:</strong> Chỉ số thể lực của cầu thủ (0-100)</li>
+                </ul>
+            </div>            
+        </div>
+    </div>
+
+    <script>
+        // Improved form submission with loading state
+        function submitForm() {
+            const chartWrapper = document.getElementById('chartWrapper');
+            
+            // Show loading animation
+            chartWrapper.innerHTML = `
+                <div class="chart-loading">
+                    <div class="spinner"></div>
+                    <p>Đang tải biểu đồ...</p>
+                </div>
+            `;
+            
+            // Submit form
+            document.querySelector('.metric-form').submit();
+        }
+
+        // Check for empty chart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartWrapper = document.getElementById('chartWrapper');
+            
+            // Add timeout to check if chart loaded
+            setTimeout(() => {
+                if (chartWrapper && (chartWrapper.innerHTML.trim() === '' || chartWrapper.innerHTML.includes('No data'))) {
+                    chartWrapper.innerHTML = `
+                        <div class="empty-chart">
+                            <div class="empty-chart-icon">📊</div>
+                            <h3>Không có dữ liệu</h3>
+                            <p>Vui lòng thêm cầu thủ để xem biểu đồ phân tích</p>
+                            <p><a href="/players" class="text-blue-600 hover:text-blue-800">Thêm cầu thủ ngay →</a></p>
+                        </div>
+                    `;
+                }
+            }, 500);
+        });
+
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('Chart error:', e);
+            const chartWrapper = document.getElementById('chartWrapper');
+            if (chartWrapper) {
+                chartWrapper.innerHTML = `
+                    <div class="empty-chart">
+                        <div class="empty-chart-icon">⚠️</div>
+                        <h3>Lỗi tải biểu đồ</h3>
+                        <p>Vui lòng thử lại sau</p>
+                        <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Tải lại trang
+                        </button>
+                    </div>
+                `;
+            }
+        });
+
+        // Accessibility improvements
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('metric-select')) {
+                submitForm();
+            }
+        });
+    </script>
+</body>
+</html>
