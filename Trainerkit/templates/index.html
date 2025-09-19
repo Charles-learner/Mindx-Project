@@ -2,30 +2,47 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <title>Trainerkit - Trang chủ</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Trainerkit - Phân tích Cầu thủ</title>
-  <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="static/style2.css" rel="stylesheet">
-  <link href="static/style3.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body>
-
-    <div class="navbar-container">
-        <div class="navbar">
-            <div class="navbar-left">
-                <a href="/" class="nav-link"><div style="color: #2563eb; font-size: 20px; font-weight: 800;">🏠 Home</div></a>
-                <a href="/players" class="nav-link"><div>👥 Players</div></a>
-                <a href="/chart" class="nav-link"><div>📊 Analysis</div></a>
-                <a href="/comp" class="nav-link"><div>📊 Comparison</div></a>   
-            </div>
-            <div class="navbar-right">
-                <div class="sign-in">Sign in</div>
-                <div class="join-now">Join now</div>
-            </div>
-        </div>
+<body class="light">
+  <!-- NAV -->
+  <div class="navbar-container">
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="/" class="active">🏠 Home</a>
+        <a href="/players">👥 Players</a>
+        <a href="/chart">📊 Analysis</a>
+        <a href="/comp">📊 Comparison</a>
+      </div>
+      <div class="navbar-right">
+        <button id="darkToggle" class="toggle-btn">🌙 Dark Mode</button>
+      </div>
     </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-28 text-center">
+    <h1 class="page-title">⚽ Trainerkit</h1>
+    <p class="mb-6 text-lg">Ứng dụng quản lý & phân tích cầu thủ cho CLB của bạn. Dữ liệu đọc trực tiếp từ <code>data/players.csv</code>.</p>
+    <div class="flex justify-center gap-3 flex-wrap">
+      <a class="btn btn-primary" href="/players">👥 Quản lý Cầu thủ</a>
+      <a class="btn btn-primary" href="/chart">📊 Phân tích</a>
+      <a class="btn btn-primary" href="/comp">📈 So sánh</a>
+      <a href="/player">👤 Player</a>
+    </div>
+    <div class="info-card mt-8">
+      <b>Mẹo:</b> Chỉnh CSV và refresh trang là cập nhật ngay. Các biểu đồ lấy dữ liệu qua API Flask.
+    </div>
+  </main>
+
+  <script>
+    const body=document.body, nav=document.querySelector('.navbar-container');
+    document.getElementById('darkToggle').onclick=()=>{ body.classList.toggle('dark'); nav.classList.toggle('dark'); 
+      document.getElementById('darkToggle').textContent = body.classList.contains('dark')?'🌞 Light Mode':'🌙 Dark Mode'; };
+  </script>
+</body>
+</html>

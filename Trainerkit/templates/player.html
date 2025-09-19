@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trainerkit - Cầu thủ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="/static/style.css" rel="stylesheet">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body class="light">
+  <!-- NAV -->
+  <div class="navbar-container">
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="/">🏠 Home</a>
+        <a href="/players">👥 Players</a>
+        <a href="/chart">📊 Analysis</a>
+        <a href="/comp">📊 Comparison</a>
+        <a href="/player" class="active">👤 Player</a>
+      </div>
+      <div class="navbar-right">
+        <button id="darkToggle" class="toggle-btn">🌙 Dark Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-28">
+    <h1 class="page-title">👤 Thông tin cầu thủ</h1>
+
+    <div class="info-card flex gap-4 items-center">
+      <select id="playerSelect" class="metric-select"></select>
+      <button id="btnLoad" class="btn btn-primary">🔍 Xem</button>
+    </div>
+
+    <div id="playerInfo" class="info-card mt-6 hidden"></div>
+
+    <div class="grid-2 mt-6">
+      <div class="chart-box">
+        <h3 class="section-title">Radar Chart</h3>
+        <div id="radarBox" style="height:460px"></div>
+      </div>
+      <div class="chart-box">
+        <h3 class="section-title">Chỉ số chính</h3>
+        <div id="barsBox" class="space-y-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const body=document.body, nav=document.querySelector('.navbar-container');
+    document.getElementById('darkToggle').onclick=()=>{
+      body.classList.toggle('dark'); nav.classList.toggle('dark');
+      document.getElementById('darkToggle').textContent = body.classList.contains('dark')?'🌞 Light Mode':'🌙 Dark Mode';
+      if(window._lastPlayer) renderRadar(window._lastPlayer);
+    };
+
+    async function loadPlayers(){
+      const res=await fetch('/api/players'); const data=await res.json();
+      const sel=document.getElementById('playerSelect');
+      sel.innerHTML='';
+      data.forEach(p=>{
+        const o=document.createElement('option'); o.value=p.name; o.textContent=p.name;
+        sel.appendChild(o);
+      });
+    }
+
+    async function showPlayer(){
+      const name=document.getElementById('playerSelect').value;
+      const res=await fetch(`/api/player?name=${encodeURIComponent(name)}`);
+      if(!res.ok) return alert('Không lấy được dữ liệu');
+      const d=await res.json();
+      window._lastPlayer = d;
+
+      document.getElementById('playerInfo').classList.remove('hidden');
+      document.getElementById('playerInfo').innerHTML = `
+        <b>${d.name}</b> — ${d.position}, ${d.age} tuổi
+      `;
+
+      renderRadar(d);
+
+      // Bars
+      const bars=document.getElementById('barsBox'); bars.innerHTML='';
+      ["goals","assists","stamina","dribbles","shots"].forEach(k=>{
+        const raw=d.raw[k], val=d.scaled[k];
+        const div=document.createElement('div');
+        div.innerHTML=`
+          <div><b>${k}</b>: ${raw}</div>
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded h-3">
+            <div class="bg-blue-500 h-3 rounded" style="width:${val}%;"></div>
+          </div>`;
+        bars.appendChild(div);
+      });
+    }
+
+    function renderRadar(d){
+      const dark=body.classList.contains('dark');
+      const categories=Object.keys(d.scaled);
+      const series=[{
+        name: d.name,
+        data: Object.values(d.scaled),
+        pointPlacement:'on',
+        tooltip:{pointFormatter:function(){ 
+          return `<b>${this.y}% (${d.raw[this.category]})</b>`;
+        }}
+      }];
+
+      Highcharts.chart('radarBox',{
+        chart:{ polar:true, type:'line', backgroundColor: dark?'#1f2937':'#ffffff' },
+        title:{ text:`Chỉ số radar - ${d.name}`, style:{ color: dark?'#f9fafb':'#111827' } },
+        pane:{ size:'80%' },
+        xAxis:{ categories, tickmarkPlacement:'on', lineWidth:0,
+                labels:{ style:{ color: dark?'#f9fafb':'#111827' } } },
+        yAxis:{ gridLineInterpolation:'polygon', lineWidth:0, min:0, max:100,
+                labels:{ style:{ color: dark?'#f9fafb':'#111827' } } },
+        legend:{ itemStyle:{ color: dark?'#f9fafb':'#111827' } },
+        tooltip:{ shared:true, useHTML:true },
+        series: series,
+        credits:{ enabled:false }
+      });
+    }
+
+    document.getElementById('btnLoad').onclick=showPlayer;
+    loadPlayers();
+  </script>
+</body>
+</html>

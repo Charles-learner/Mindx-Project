@@ -2,361 +2,180 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Trainerkit - Quản lý Cầu thủ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="static/style1.css" rel="stylesheet">
-  <link href="static/style2.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
+<body class="light">
+  <!-- NAV -->
+  <div class="navbar-container">
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="/">🏠 Home</a>
+        <a href="/players" class="active">👥 Players</a>
+        <a href="/chart">📊 Analysis</a>
+        <a href="/comp">📊 Comparison</a>
+        <a href="/player">👤 Player</a>
+      </div>
+      <div class="navbar-right">
+        <button id="darkToggle" class="toggle-btn">🌙 Dark Mode</button>
+      </div>
+    </div>
+  </div>
 
-    <div class="navbar-container">
-        <div class="navbar">
-            <div class="navbar-left">
-                <a href="/" class="nav-link"><div style="color: #2563eb; font-size: 20px; font-weight: 800;">🏠 Home</div></a>
-                <a href="/players" class="nav-link"><div>👥 Players</div></a>
-                <a href="/chart" class="nav-link"><div>📊 Analysis</div></a>
-                <a href="/comp" class="nav-link"><div>📊 Comparison</div></a>   
-            </div>
-            <div class="navbar-right">
-                <div class="sign-in">Sign in</div>
-                <div class="join-now">Join now</div>
-            </div>
-        </div>
+  <div class="max-w-6xl mx-auto px-6 py-28">
+    <h1 class="page-title">👥 Quản lý Cầu thủ</h1>
+
+    <!-- Add form -->
+    <div class="info-card">
+      <div class="grid-3">
+        <input id="name" placeholder="Tên cầu thủ" />
+        <input id="age" type="number" min="10" max="60" placeholder="Tuổi" />
+        <select id="position">
+          <option value="">-- Vị trí --</option>
+          <option value="Goalkeeper">Goalkeeper</option>
+          <option value="Defender">Defender</option>
+          <option value="Midfielder">Midfielder</option>
+          <option value="Forward">Forward</option>
+        </select>
+      </div>
+
+      <!-- Common -->
+      <div class="grid-3 mt-3">
+        <input id="goals" type="number" min="0" placeholder="⚽ Goals" />
+        <input id="assists" type="number" min="0" placeholder="🅰️ Assists" />
+        <input id="stamina" type="number" min="0" max="100" placeholder="💪 Stamina (0-100)" />
+      </div>
+
+      <!-- GK -->
+      <div id="gkFields" class="grid-3 mt-3" style="display:none">
+        <input id="games" type="number" min="0" placeholder="Games" />
+        <input id="clean_sheets" type="number" min="0" placeholder="Clean sheets" />
+        <input id="saves" type="number" min="0" placeholder="Saves" />
+        <input id="high_claims" type="number" min="0" placeholder="High claims" />
+        <input id="catches" type="number" min="0" placeholder="Catches" />
+      </div>
+
+      <!-- DEF -->
+      <div id="defFields" class="grid-3 mt-3" style="display:none">
+        <input id="tackles" type="number" min="0" placeholder="Tackles" />
+        <input id="clearances" type="number" min="0" placeholder="Clearances" />
+        <input id="blocks" type="number" min="0" placeholder="Blocks" />
+        <input id="interceptions" type="number" min="0" placeholder="Interceptions" />
+      </div>
+
+      <!-- MID -->
+      <div id="midFields" class="grid-3 mt-3" style="display:none">
+        <input id="passes_completed" type="number" min="0" placeholder="Passes completed" />
+        <input id="key_passes" type="number" min="0" placeholder="Key passes" />
+        <input id="ball_recoveries" type="number" min="0" placeholder="Ball recoveries" />
+        <input id="mf_dribbles" type="number" min="0" placeholder="Dribbles" />
+      </div>
+
+      <!-- FWD -->
+      <div id="fwdFields" class="grid-3 mt-3" style="display:none">
+        <input id="shots" type="number" min="0" placeholder="Shots" />
+        <input id="shots_on_target" type="number" min="0" placeholder="Shots on target" />
+        <input id="fw_dribbles" type="number" min="0" placeholder="Dribbles" />
+        <input id="chances_created" type="number" min="0" placeholder="Chances created" />
+      </div>
+
+      <div class="mt-3 flex justify-end">
+        <button id="btnAdd" class="btn btn-primary">➕ Thêm cầu thủ</button>
+      </div>
     </div>
 
-    <div class="container">
-        <h1 class="page-title">⚽ Quản lý Cầu thủ CLB</h1>
-
-        <div id="messageContainer"></div>
-
-        <form id="playerForm" class="player-form">
-            <input type="text" id="name" placeholder="🏷️ Tên cầu thủ" required>
-            <input type="number" id="age" placeholder="🎂 Tuổi" required min="16" max="45">
-            <select id="position" required>
-                <option value="">-- 📍 Chọn vị trí --</option>
-                <option value="GK">🥅 Thủ môn (GK)</option>
-                <option value="LB">⬅️ Hậu vệ trái (LB)</option>
-                <option value="RB">➡️ Hậu vệ phải (RB)</option>
-                <option value="CB">🛡️ Trung vệ (CB)</option>
-                <option value="CDM">⚔️ Tiền vệ phòng ngự (CDM)</option>
-                <option value="CM">⚽ Tiền vệ trung tâm (CM)</option>
-                <option value="CAM">🎯 Tiền vệ tấn công (CAM)</option>
-                <option value="LM">⬅️ Tiền vệ cánh trái (LM)</option>
-                <option value="RM">➡️ Tiền vệ cánh phải (RM)</option>
-                <option value="LW">🏃 Tiền đạo cánh trái (LW)</option>
-                <option value="RW">🏃 Tiền đạo cánh phải (RW)</option>
-                <option value="ST">🎯 Tiền đạo cắm (ST)</option>
-            </select>
-            <input type="number" id="goals" placeholder="⚽ Bàn thắng" min="0" value="0">
-            <input type="number" id="assists" placeholder="🅰️ Kiến tạo" min="0" value="0">
-            <input type="number" id="stamina" placeholder="💪 Thể lực (0-100)" min="0" max="100" required>
-            <button type="submit" class="submit-btn">
-                ➕ Thêm cầu thủ
-            </button>
-        </form>
-
-        <div class="section-header">
-            <h2>👥 Danh sách Cầu thủ</h2>
-            <div class="player-count" id="playerCount">0 cầu thủ</div>
-        </div>
-        
-        <ul id="playerList"></ul>
-
-        <div class="section-header">
-            <h2>📊 Thống kê Đội bóng</h2>
-        </div>
-        <div id="stats"></div>
+    <!-- List -->
+    <h2 class="section-title">Danh sách</h2>
+    <div class="info-card">
+      <ul id="playerList"></ul>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="editModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>✏️ Chỉnh sửa Cầu thủ</h2>
-                <button onclick="cancelEdit()" class="close-btn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="editName" placeholder="🏷️ Tên cầu thủ">
-                <input type="number" id="editAge" placeholder="🎂 Tuổi" min="16" max="45">
-                <select id="editPosition">
-                    <option value="">-- 📍 Chọn vị trí --</option>
-                    <option value="GK">🥅 Thủ môn (GK)</option>
-                    <option value="LB">⬅️ Hậu vệ trái (LB)</option>
-                    <option value="RB">➡️ Hậu vệ phải (RB)</option>
-                    <option value="CB">🛡️ Trung vệ (CB)</option>
-                    <option value="CDM">⚔️ Tiền vệ phòng ngự (CDM)</option>
-                    <option value="CM">⚽ Tiền vệ trung tâm (CM)</option>
-                    <option value="CAM">🎯 Tiền vệ tấn công (CAM)</option>
-                    <option value="LM">⬅️ Tiền vệ cánh trái (LM)</option>
-                    <option value="RM">➡️ Tiền vệ cánh phải (RM)</option>
-                    <option value="LW">🏃 Tiền đạo cánh trái (LW)</option>
-                    <option value="RW">🏃 Tiền đạo cánh phải (RW)</option>
-                    <option value="ST">🎯 Tiền đạo cắm (ST)</option>
-                </select>
-                <input type="number" id="editGoals" placeholder="⚽ Bàn thắng" min="0">
-                <input type="number" id="editAssists" placeholder="🅰️ Kiến tạo" min="0">
-                <input type="number" id="editStamina" placeholder="💪 Thể lực" min="0" max="100">
-            </div>
-            <div class="modal-footer">
-                <button onclick="saveEdit()" class="save-btn">💾 Lưu thay đổi</button>
-                <button onclick="cancelEdit()" class="cancel-btn">❌ Hủy</button>
-            </div>
-        </div>
+    <!-- Stats -->
+    <h2 class="section-title">📊 Thống kê đội</h2>
+    <div id="teamStats" class="info-card"></div>
+  </div>
+
+  <!-- Edit modal -->
+  <div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 class="section-title">✏️ Chỉnh sửa</h3>
+      <div class="grid-3">
+        <input id="e_name" placeholder="Tên" />
+        <input id="e_age" type="number" min="10" max="60" placeholder="Tuổi" />
+        <select id="e_position">
+          <option value="">-- Vị trí --</option>
+          <option value="Goalkeeper">Goalkeeper</option>
+          <option value="Defender">Defender</option>
+          <option value="Midfielder">Midfielder</option>
+          <option value="Forward">Forward</option>
+        </select>
+      </div>
+
+      <div class="grid-3 mt-3">
+        <input id="e_goals" type="number" min="0" placeholder="Goals" />
+        <input id="e_assists" type="number" min="0" placeholder="Assists" />
+        <input id="e_stamina" type="number" min="0" max="100" placeholder="Stamina" />
+      </div>
+
+      <div id="e_gkFields" class="grid-3 mt-3" style="display:none">
+        <input id="e_games" type="number" min="0" placeholder="Games" />
+        <input id="e_clean_sheets" type="number" min="0" placeholder="Clean sheets" />
+        <input id="e_saves" type="number" min="0" placeholder="Saves" />
+        <input id="e_high_claims" type="number" min="0" placeholder="High claims" />
+        <input id="e_catches" type="number" min="0" placeholder="Catches" />
+      </div>
+
+      <div id="e_defFields" class="grid-3 mt-3" style="display:none">
+        <input id="e_tackles" type="number" min="0" placeholder="Tackles" />
+        <input id="e_clearances" type="number" min="0" placeholder="Clearances" />
+        <input id="e_blocks" type="number" min="0" placeholder="Blocks" />
+        <input id="e_interceptions" type="number" min="0" placeholder="Interceptions" />
+      </div>
+
+      <div id="e_midFields" class="grid-3 mt-3" style="display:none">
+        <input id="e_passes_completed" type="number" min="0" placeholder="Passes completed" />
+        <input id="e_key_passes" type="number" min="0" placeholder="Key passes" />
+        <input id="e_ball_recoveries" type="number" min="0" placeholder="Ball recoveries" />
+        <input id="e_mf_dribbles" type="number" min="0" placeholder="Dribbles" />
+      </div>
+
+      <div id="e_fwdFields" class="grid-3 mt-3" style="display:none">
+        <input id="e_shots" type="number" min="0" placeholder="Shots" />
+        <input id="e_shots_on_target" type="number" min="0" placeholder="Shots on target" />
+        <input id="e_fw_dribbles" type="number" min="0" placeholder="Dribbles" />
+        <input id="e_chances_created" type="number" min="0" placeholder="Chances created" />
+      </div>
+
+      <div class="mt-3 flex justify-end gap-2">
+        <button id="btnSave" class="btn btn-primary">💾 Lưu</button>
+        <button id="btnCancel" class="btn btn-secondary">❌ Hủy</button>
+      </div>
     </div>
+  </div>
 
-    <script>
-        let editingIndex = null;
-        
-        function showMessage(message, type = 'success') {
-            const container = document.getElementById('messageContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
-            container.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                messageDiv.remove();
-            }, 5000);
-        }
-        
-        function showLoading(element) {
-            element.classList.add('loading');
-        }
-        
-        function hideLoading(element) {
-            element.classList.remove('loading');
-        }
+  <script src="/static/players.js"></script>
+  <script>
+    // Dark mode
+    const body=document.body, nav=document.querySelector('.navbar-container');
+    document.getElementById('darkToggle').onclick=()=>{
+      body.classList.toggle('dark'); nav.classList.toggle('dark');
+      document.getElementById('darkToggle').textContent = body.classList.contains('dark')?'🌞 Light Mode':'🌙 Dark Mode';
+    };
 
-        async function fetchPlayers() {
-            try {
-                const list = document.getElementById('playerList');
-                showLoading(list);
-                
-                const res = await fetch('/api/players');
-                if (!res.ok) throw new Error('Failed to fetch players');
-                
-                const data = await res.json();
-                list.innerHTML = '';
-                
-                document.getElementById('playerCount').textContent = `${data.length} cầu thủ`;
-                
-                if (data.length === 0) {
-                    list.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">⚽</div>
-                            <h3>Chưa có cầu thủ nào</h3>
-                            <p>Hãy thêm cầu thủ đầu tiên cho đội bóng của bạn!</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                data.forEach((p, i) => {
-                    const li = document.createElement('li');
-                    li.className = 'player-card';
-                    li.innerHTML = `
-                        <div class="player-info">
-                            <div class="player-name">${p.name}</div>
-                            <div class="player-detail">🎂 ${p.age} tuổi</div>
-                            <div class="player-detail">📍 ${p.position}</div>
-                            <div class="player-detail">⚽ ${p.goals}</div>
-                            <div class="player-detail">🅰️ ${p.assists}</div>
-                            <div class="player-detail">💪 ${p.stamina}</div>
-                        </div>
-                        <div class="player-actions">
-                            <button onclick="editPlayer(${i})" class="btn-edit">✏️ Sửa</button>
-                            <button onclick="deletePlayer(${i})" class="btn-delete">🗑️ Xóa</button>
-                        </div>
-                    `;
-                    list.appendChild(li);
-                });
-            } catch (error) {
-                showMessage('Lỗi khi tải danh sách cầu thủ: ' + error.message, 'error');
-            } finally {
-                hideLoading(document.getElementById('playerList'));
-            }
-        }
-
-        async function deletePlayer(index) {
-            const result = await Swal.fire({
-                title: 'Xác nhận xóa?',
-                text: 'Bạn có chắc muốn xóa cầu thủ này?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Xóa',
-                cancelButtonText: 'Hủy'
-            });
-            
-            if (!result.isConfirmed) return;
-            
-            try {
-                const res = await fetch(`/api/players/${index}`, { method: 'DELETE' });
-                if (!res.ok) throw new Error('Failed to delete player');
-                
-                await fetchPlayers();
-                await fetchStats();
-                
-                Swal.fire('Đã xóa!', 'Cầu thủ đã được xóa thành công.', 'success');
-            } catch (error) {
-                Swal.fire('Lỗi!', 'Không thể xóa cầu thủ: ' + error.message, 'error');
-            }
-        }
-
-        function editPlayer(index) {
-            editingIndex = index;
-            fetch('/api/players')
-                .then(res => res.json())
-                .then(players => {
-                    const p = players[index];
-                    document.getElementById('editName').value = p.name;
-                    document.getElementById('editAge').value = p.age;
-                    document.getElementById('editPosition').value = p.position;
-                    document.getElementById('editGoals').value = p.goals;
-                    document.getElementById('editAssists').value = p.assists;
-                    document.getElementById('editStamina').value = p.stamina;
-                    document.getElementById('editModal').classList.remove('hidden');
-                });
-        }
-
-        async function saveEdit() {
-            try {
-                const updated = {
-                    name: document.getElementById('editName').value,
-                    age: parseInt(document.getElementById('editAge').value),
-                    position: document.getElementById('editPosition').value,
-                    goals: parseInt(document.getElementById('editGoals').value) || 0,
-                    assists: parseInt(document.getElementById('editAssists').value) || 0,
-                    stamina: parseInt(document.getElementById('editStamina').value)
-                };
-
-                const res = await fetch(`/api/players/${editingIndex}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updated)
-                });
-                
-                if (!res.ok) throw new Error('Failed to update player');
-
-                document.getElementById('editModal').classList.add('hidden');
-                await fetchPlayers();
-                await fetchStats();
-                
-                Swal.fire('Thành công!', 'Thông tin cầu thủ đã được cập nhật.', 'success');
-            } catch (error) {
-                Swal.fire('Lỗi!', 'Không thể cập nhật thông tin: ' + error.message, 'error');
-            }
-        }
-
-        function cancelEdit() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
-
-        async function fetchStats() {
-            try {
-                const statsDiv = document.getElementById('stats');
-                showLoading(statsDiv);
-                
-                const res = await fetch('/api/stats');
-                if (!res.ok) throw new Error('Failed to fetch stats');
-                
-                const stats = await res.json();
-                
-                statsDiv.innerHTML = `
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.avg_goals}</div>
-                            <div class="stat-label">⚽ Trung bình bàn thắng</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.avg_assists}</div>
-                            <div class="stat-label">🅰️ Trung bình kiến tạo</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.avg_stamina}</div>
-                            <div class="stat-label">💪 Thể lực trung bình</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.top_scorer.name || 'N/A'}</div>
-                            <div class="stat-label">🏆 Vua phá lưới (${stats.top_scorer.goals || 0} bàn)</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${stats.top_assist.name || 'N/A'}</div>
-                            <div class="stat-label">🎯 Kiến tạo nhiều nhất (${stats.top_assist.assists || 0} kiến tạo)</div>
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                document.getElementById('stats').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📊</div>
-                        <p>Không thể tải thống kê: ${error.message}</p>
-                    </div>
-                `;
-            } finally {
-                hideLoading(document.getElementById('stats'));
-            }
-        }
-
-        document.getElementById('playerForm').addEventListener('submit', async e => {
-            e.preventDefault();
-            
-            try {
-                const form = e.target;
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                
-                submitBtn.textContent = '⏳ Đang thêm...';
-                submitBtn.disabled = true;
-                
-                const player = {
-                    name: document.getElementById('name').value,
-                    age: +document.getElementById('age').value,
-                    position: document.getElementById('position').value,
-                    goals: +document.getElementById('goals').value || 0,
-                    assists: +document.getElementById('assists').value || 0,
-                    stamina: +document.getElementById('stamina').value
-                };
-                
-                const res = await fetch('/api/players', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(player)
-                });
-                
-                if (!res.ok) throw new Error('Failed to add player');
-                
-                await fetchPlayers();
-                await fetchStats();
-                form.reset();
-                
-                Swal.fire('Thành công!', `Đã thêm cầu thủ ${player.name} vào đội bóng.`, 'success');
-            } catch (error) {
-                Swal.fire('Lỗi!', 'Không thể thêm cầu thủ: ' + error.message, 'error');
-            } finally {
-                const submitBtn = document.querySelector('button[type="submit"]');
-                submitBtn.textContent = '➕ Thêm cầu thủ';
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Close modal when clicking outside
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                cancelEdit();
-            }
-        });
-
-        // Initialize
-        fetchPlayers();
-        fetchStats();
-    </script>
+    // Toggle fields by position
+    function toggleFields(prefix, pos){
+      document.getElementById(prefix+"gkFields").style.display = (pos==="Goalkeeper") ? "grid" : "none";
+      document.getElementById(prefix+"defFields").style.display = (pos==="Defender") ? "grid" : "none";
+      document.getElementById(prefix+"midFields").style.display = (pos==="Midfielder") ? "grid" : "none";
+      document.getElementById(prefix+"fwdFields").style.display = (pos==="Forward") ? "grid" : "none";
+    }
+    document.getElementById("position").onchange = e => toggleFields("", e.target.value);
+    document.getElementById("e_position").onchange = e => toggleFields("e_", e.target.value);
+  </script>
 </body>
 </html>

@@ -2,421 +2,113 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <title>Trainerkit - So sánh</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Trainerkit - Comparison</title>
-
-  <!-- Highcharts -->
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/data.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="https://code.highcharts.com/modules/export-data.js"></script>
-
-  <!-- Plotly -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/static/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- Fonts & CSS -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="static/style2.css" rel="stylesheet">
-  <link href="{{ url_for('static', filename='style3.css') }}" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #fff;
-      color: #111;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    
-    body.dark {
-      background: #0f172a;
-      color: #e2e8f0;
-    }
-
-    .chart-title {
-    font-size: 28px;       /* thật to */
-    font-weight: 800;      /* thật đậm */
-    text-align: center;    /* căn giữa */
-    margin: 40px 0 20px;
-    color: #111;           /* mặc định light mode */
-    }
-
-body.dark .chart-title {
-  color: #fff;           /* khi bật dark mode thì trắng */
-}
-
-    
-    /* Chart Styles */
-    .chart-box {
-      width: 100% !important;
-      height: 100%% !important;
-      margin-bottom: 80px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-    
-    body.dark .chart-box {
-      background: #1e293b;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-    
-    .chart-box:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-    
-    body.dark .chart-box:hover {
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    }
-    
-    .toggle-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
-      font-size: 0.875rem;
-    }
-    
-    .toggle-btn:hover {
-      background: linear-gradient(135deg, #1d4ed8, #1e40af);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
-    }
-    
-    body.dark .toggle-btn {
-      background: linear-gradient(135deg, #facc15, #eab308);
-      color: #111;
-      box-shadow: 0 2px 4px rgba(250, 204, 21, 0.2);
-    }
-    
-    body.dark .toggle-btn:hover {
-      background: linear-gradient(135deg, #eab308, #ca8a04);
-      box-shadow: 0 4px 8px rgba(250, 204, 21, 0.3);
-    }
-    
-    .loading-spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #f3f4f6;
-      border-radius: 50%;
-      border-top-color: #2563eb;
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .error-message {
-      text-align: center;
-      padding: 20px;
-      color: #ef4444;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      border-radius: 8px;
-      margin: 20px 0;
-    }
-    
-    body.dark .error-message {
-      background: #451a1a;
-      border-color: #7f1d1d;
-      color: #fca5a5;
-    }
-  </style>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
 </head>
-<body>
-
-  <!-- Navbar -->
+<body class="light">
+  <!-- NAV -->
   <div class="navbar-container">
-    <div class="navbar flex justify-between items-center p-4 bg-white shadow transition-all duration-300">
-      <div class="navbar-left flex gap-4">
-        <a href="/" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">🏠 Home</a>
-        <a href="/players" class="hover:text-blue-600 transition-colors">👥 Players</a>
-        <a href="/chart" class="hover:text-blue-600 transition-colors">📊 Analysis</a>
-        <a href="/comp" class="text-blue-600 font-semibold">📊 Comparison</a>
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="/">🏠 Home</a>
+        <a href="/players">👥 Players</a>
+        <a href="/chart">📊 Analysis</a>
+        <a href="/comp" class="active">📊 Comparison</a>
+        <a href="/player">👤 Player</a>
       </div>
       <div class="navbar-right">
-        <button id="toggleDark" class="toggle-btn">🌙 Dark Mode</button>
+        <button id="darkToggle" class="toggle-btn">🌙 Dark Mode</button>
       </div>
     </div>
   </div>
 
-  <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-8 text-center">📊 So sánh và Phân tích Chi tiết</h1>
-    
-    <!-- Highcharts containers -->
-    <div class="chart-section mb-8">
-      <h2 class="chart-title">📈 Biểu đồ Highcharts</h2>
-      <div id="container1" class="chart-box">
-        <div class="loading-spinner"></div>
-        <span>Đang tải biểu đồ...</span>
-      </div>
-      <div id="container2" class="chart-box">
-        <div class="loading-spinner"></div>
-        <span>Đang tải biểu đồ...</span>
+  <div class="max-w-6xl mx-auto px-6 py-28">
+    <h1 class="page-title">📈 So sánh cầu thủ</h1>
+
+    <div class="info-card">
+      <div class="flex flex-wrap items-center gap-3">
+        <select id="p1" class="metric-select"></select>
+        <select id="p2" class="metric-select"></select>
+        <button id="btnCompare" class="btn btn-primary">🔍 So sánh</button>
       </div>
     </div>
 
-    <!-- Plotly charts -->
-    <div class="chart-section">
-      <h2 class="chart-title">📊 Biểu đồ Plotly</h2>
-      
-      <!-- Age Distribution Chart -->
-      <div class="chart-box">
-        <div id="violin-chart"></div>
-      </div>
-
-      <!-- Goalkeepers Chart -->
-      <div class="chart-box">
-        <div id="gk-chart"></div>
-      </div>
+    <div class="chart-box mt-4">
+      <h3 class="section-title">Highcharts Radar</h3>
+      <div id="radarBox" style="height:500px"></div>
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='main.js') }}"></script>
+  <script>
+    const body=document.body, nav=document.querySelector('.navbar-container');
+    document.getElementById('darkToggle').onclick=()=>{ 
+      body.classList.toggle('dark'); nav.classList.toggle('dark'); 
+      document.getElementById('darkToggle').textContent = body.classList.contains('dark')?'🌞 Light Mode':'🌙 Dark Mode';
+      if (window._lastComp) drawRadar(window._lastComp.categories, window._lastComp.series);
+    };
 
-<script>
-  // Global error handler
-  window.addEventListener('error', function(e) {
-    console.error('Page error:', e);
-  });
-
-  // ===================== Violin chart =====================
-  async function renderViolin(isDark) {
-    try {
-      const violinContainer = document.getElementById("violin-chart");
-
-
-      const res = await fetch("/api/players");
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
+    async function loadPlayers(){
+      const res = await fetch('/api/players'); 
       const data = await res.json();
-
-      if (!data || !Array.isArray(data) || data.length === 0) {
-        violinContainer.innerHTML = "<p class='text-center text-gray-500'>Không có dữ liệu cầu thủ</p>";
-        return;
-      }
-
-      const validAges = data.filter(p => p.age && !isNaN(p.age)).map(p => ({ age: p.age, position: p.position || 'Unknown' }));
-      
-      if (validAges.length === 0) {
-        violinContainer.innerHTML = "<p class='text-center text-gray-500'>Không có dữ liệu tuổi hợp lệ</p>";
-        return;
-      }
-
-      const ages = validAges.map(p => p.age);
-      const positions = validAges.map(p => p.position);
-      const avgAge = ages.reduce((a, b) => a + b, 0) / ages.length;
-
-      const trace = {
-        type: 'violin',
-        y: ages,
-        x: positions,
-        box: {visible: true},
-        meanline: {visible: true},
-        points: 'all',
-        width: 0.9,
-        marker: {color: isDark ? '#fbbf24' : '#3b82f6'},
-        line: {color: isDark ? '#fbbf24' : '#3b82f6', width: 2},
-        fillcolor: isDark ? 'rgba(251,191,36,0.5)' : 'rgba(59,130,246,0.5)'
-      };
-
-const layout = {
-  title: {
-    text: "<b>Phân bố độ tuổi cầu thủ theo vị trí</b>",
-    font: {size: 20, family: 'Inter, sans-serif', color: isDark ? '#fbbf24' : '#111'},
-    x: 0.5,
-    xanchor: 'center',
-    pad: { b: 40 } // 👈 tạo khoảng cách giữa title và chart/legend
-  },
-  template: isDark ? 'plotly_dark' : 'simple_white',
-  paper_bgcolor: isDark ? '#111111' : '#ffffff',
-  plot_bgcolor: isDark ? '#111111' : '#ffffff',
-  font: { color: isDark ? '#fbbf24' : '#111' },   // 👈 text chung
-  xaxis: {
-    tickfont: { color: isDark ? '#fbbf24' : '#111' },
-    title: { text: "Vị trí", font: { color: isDark ? '#fbbf24' : '#111' } },
-  },
-  yaxis: {
-    tickfont: { color: isDark ? '#fbbf24' : '#111' },
-    title: { text: "Tuổi", font: { color: isDark ? '#fbbf24' : '#111' } }
-  },
-  shapes: [
-    {
-      type: 'line',
-      x0: 0, x1: 1, xref: 'paper',
-      y0: avgAge, y1: avgAge, yref: 'y',
-      line: {color: isDark ? '#fbbf24' : '#3b82f6', width: 3, dash: 'dot'}
-    }
-  ],
-  annotations: [
-    {
-      x: 0.02, y: avgAge,
-      xref: 'paper', yref: 'y',
-      text: `Tuổi TB: ${avgAge.toFixed(1)}`,
-      showarrow: false,
-      font: { color: isDark ? '#fbbf24' : '#111' },   // 👈 màu text annotation
-      bgcolor: isDark ? '#374151' : '#f3f4f6',
-      bordercolor: isDark ? '#fbbf24' : '#3b82f6',
-      borderwidth: 1
-    }
-  ],
-  legend: {
-    orientation: "h",
-    y: 0, // 👈 hạ legend xuống xa title
-    x: 0.5,
-    xanchor: 'center',
-    font: { color: isDark ? '#fbbf24' : '#111' }
-  },
-  autosize: true,
-  height: 400,
-  margin: {l:50, r:50, t:80, b:50}
-};
-
-      await Plotly.newPlot("violin-chart", [trace], layout, {responsive: true});
-    } catch (error) {
-      console.error('Violin chart error:', error);
-      document.getElementById("violin-chart").innerHTML = 
-        `<div class="error-message">Lỗi tải biểu đồ tuổi: ${error.message}</div>`;
-    }
-  }
-
-  // ===================== Goalkeeper chart =====================
-  async function renderGK(isDark) {
-    try {
-      const gkContainer = document.getElementById("gk-chart");
-
-
-      const res = await fetch("/api/players");
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
-      const data = await res.json();
-
-      const goalkeepers = data.filter(p => {
-        const pos = (p.position || '').toLowerCase();
-        return ["gk", "goalkeeper", "goal keeper", "goal-keeper", "thủ môn"].includes(pos);
+      const p1 = document.getElementById('p1'); 
+      const p2 = document.getElementById('p2');
+      [p1,p2].forEach(sel=>{
+        sel.innerHTML='';
+        data.forEach(p=>{
+          const o=document.createElement('option'); 
+          o.value=p.name; 
+          o.textContent=p.name; 
+          sel.appendChild(o);
+        });
       });
+    }
 
-      if (!goalkeepers.length) {
-        gkContainer.innerHTML = "<p class='text-center text-gray-500'>Không có dữ liệu thủ môn</p>";
-        return;
-      }
+    async function compare(){
+      const p1=document.getElementById('p1').value;
+      const p2=document.getElementById('p2').value;
+      if(!p1||!p2||p1===p2) return;
+      const res=await fetch(`/api/comp?player1=${encodeURIComponent(p1)}&player2=${encodeURIComponent(p2)}`);
+      if(!res.ok){ alert('Không lấy được dữ liệu so sánh'); return; }
+      const {categories, series} = await res.json();
+      window._lastComp = {categories, series};
+      drawRadar(categories, series);
+    }
 
-      const metrics = ["clean_sheets", "saves", "high_claims", "catches"];
-      const titles = ["Clean Sheets", "Saves", "High Claims", "Catches"];
-      const colors = isDark ? ['#fbbf24', '#f59e0b', '#d97706', '#b45309'] : ['#3b82f6', '#1d4ed8', '#1e40af', '#1e3a8a'];
-
-      const traces = metrics.map((metric, i) => {
-        return {
-          type: "bar",
-          x: goalkeepers.map(p => p[metric] || p[metric.replace('_', ' ')] || 0),
-          y: goalkeepers.map(p => p.name || 'Unknown'),
-          orientation: "h",
-          name: titles[i],
-          marker: {color: colors[i]},
-          text: goalkeepers.map(p => p[metric] || p[metric.replace('_', ' ')] || 0),
-          textposition: 'outside'
-        };
+    function drawRadar(categories, series){
+      const dark=body.classList.contains('dark');
+      Highcharts.chart('radarBox',{
+        chart:{ polar:true, type:'line', backgroundColor: dark?'#1f2937':'#ffffff' },
+        title:{ 
+          text:'So sánh chỉ số cầu thủ',
+          style:{ color:dark?'#f9fafb':'#111827', fontFamily:'Inter, sans-serif', fontWeight:'700' }
+        },
+        pane:{ size:'80%' },
+        xAxis:{ 
+          categories, tickmarkPlacement:'on', lineWidth:0, 
+          labels:{ style:{ color: dark?'#f9fafb':'#111' } } 
+        },
+        yAxis:{ 
+          gridLineInterpolation:'polygon', lineWidth:0, min:0, 
+          labels:{ style:{ color: dark?'#f9fafb':'#111' } } 
+        },
+        tooltip:{ shared:true, pointFormat:'<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>' },
+        legend:{ align:'center', verticalAlign:'bottom', itemStyle:{ color: dark?'#f9fafb':'#111' } },
+        series: series,
+        credits:{ enabled:false }
       });
-
-const layout = {
-  title: {
-    text: "<b>Thống kê Thủ môn hàng đầu</b>",
-    font: {size: 20, family: 'Inter, sans-serif', color: isDark ? '#fbbf24' : '#111'},
-    x: 0.5,
-    xanchor: 'center',
-    pad: {b: 40}
-  },
-  template: isDark ? 'plotly_dark' : 'simple_white',
-  paper_bgcolor: isDark ? '#111111' : '#ffffff',
-  plot_bgcolor: isDark ? '#111111' : '#ffffff',
-  font: { color: isDark ? '#fbbf24' : '#111' },  // 👈 đổi text trong chart
-  barmode: "group",
-  autosize: true,
-  height: Math.max(400, goalkeepers.length * 60),
-  margin: {l:120, r:50, t:100, b:50},
-  legend: {
-    orientation: "h",
-    y: -0.35,
-    x: 0.5,
-    xanchor: 'center',
-    font: { color: isDark ? '#fbbf24' : '#111' }  // 👈 đổi màu chữ legend
-  },
-  xaxis: {
-    tickfont: { color: isDark ? '#fbbf24' : '#111' },
-    title: { text: "Số liệu", font: { color: isDark ? '#fbbf24' : '#111' } }
-  },
-  yaxis: {
-    tickfont: { color: isDark ? '#fbbf24' : '#111' },
-    title: { text: "Cầu thủ", font: { color: isDark ? '#fbbf24' : '#111' } }
-  }
-};
-
-      await Plotly.newPlot("gk-chart", traces, layout, {responsive: true});
-    } catch (error) {
-      console.error('GK chart error:', error);
-      document.getElementById("gk-chart").innerHTML = 
-        `<div class="error-message">Lỗi tải biểu đồ thủ môn: ${error.message}</div>`;
     }
-  }
 
-  // ===================== Toggle Dark Mode =====================
-  let isDarkMode = false;
-  
-  document.getElementById("toggleDark").addEventListener("click", () => {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle("dark");
-    
-    const toggleBtn = document.getElementById("toggleDark");
-    toggleBtn.innerHTML = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
-
-    // Update charts with new theme
-    try {
-      // Highcharts
-      if (window.renderCharts) window.renderCharts(isDarkMode);
-      if (window.renderCharts2) window.renderCharts2(isDarkMode);
-
-      // Plotly
-      renderViolin(isDarkMode);
-      renderGK(isDarkMode);
-    } catch (error) {
-      console.error('Theme switch error:', error);
-    }
-  });
-
-  // ===================== Initialize on load =====================
-  document.addEventListener('DOMContentLoaded', function() {
-    // Initial render
-    renderViolin(false);
-    renderGK(false);
-
-    // Check if main.js loaded successfully
-    setTimeout(() => {
-      const container1 = document.getElementById('container1');
-      const container2 = document.getElementById('container2');
-      
-      if (container1 && container1.innerHTML.includes('loading-spinner')) {
-        container1.innerHTML = '<div class="error-message">Lỗi tải script main.js</div>';
-      }
-      if (container2 && container2.innerHTML.includes('loading-spinner')) {
-        container2.innerHTML = '<div class="error-message">Lỗi tải script main.js</div>';
-      }
-    }, 3000);
-  });
-</script>
-
+    document.getElementById('btnCompare').onclick = compare;
+    loadPlayers();
+  </script>
 </body>
 </html>
+
+
